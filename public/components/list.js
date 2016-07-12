@@ -15,7 +15,7 @@ export class List extends React.Component {
 
     var card = this.props.cards.map(content => {
       return (
-        <Card key={content.id} text={content}/>
+        <Card key={content} text={content}/>
       )
     })
 
@@ -23,6 +23,8 @@ export class List extends React.Component {
                 <div className='card' style={listStyle}>
                     <p>List: {this.props.title}</p>
                     {card}
+                    <input type="text" onChange={this.props.onAddInputChanged}/>
+                    <button  onClick={this.props.onAddClick}>Add Card</button>
                 </div>
             )
     }
