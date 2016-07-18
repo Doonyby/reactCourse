@@ -9,7 +9,6 @@ export class List extends React.Component {
     }  
 
     render () {
-
     var listStyle = {
       background: "#99ffcc"}
 
@@ -23,7 +22,7 @@ export class List extends React.Component {
                 <div className='card' style={listStyle}>
                     <p>List: {this.props.title}</p>
                     {card}
-                    <input type="text" onChange={this.props.onAddInputChanged}/>
+                    <input type="text" value={this.props.inputText} onChange={this.props.onAddInputChanged}/>
                     <button  onClick={this.props.onAddClick}>Add Card</button>
                 </div>
             )
