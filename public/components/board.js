@@ -19,7 +19,7 @@ class Board extends React.Component {
       return (
         <div className='board' style={BoardStyle}>
         <p>Board: {this.props.title}</p>
-        <ListContainer  lists={['List1', 'List2']}/>
+        <ListContainer  lists={['List1']}/>
         </div>
         )
   }

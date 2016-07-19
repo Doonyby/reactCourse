@@ -87,7 +87,7 @@
 	          'Board: ',
 	          this.props.title
 	        ),
-	        React.createElement(_listContainer.ListContainer, { lists: ['List1', 'List2'] })
+	        React.createElement(_listContainer.ListContainer, { lists: ['List1'] })
 	      );
 	    }
 	  }]);

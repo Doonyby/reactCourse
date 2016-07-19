@@ -2,7 +2,7 @@
   "name": "react-thinkful",
   "version": "1.0.0",
   "description": "Thinkful react course",
-  "main": "./public/components/index.js",
+  "main": "./public/components/board.js",
   "scripts": {
     "build:js": "npm run clean:js && webpack",
     "watch:js": "npm run build:js && webpack --watch",
