@@ -45,10 +45,6 @@ var emails = {
 
 class navBar extends React.Component {
 
-  constructor(props) {
-    super(props)
-  }
-
   render () {
     return(
       <div>
@@ -69,29 +65,66 @@ class home extends React.Component {
 
 class inbox extends React.Component {
   render () {
-    var email = emails.inbox.map(email => {
-      //can't use map for objects. Find another way to do this.
+    var email = []
+
+    for(var i in emails.inbox) {
+      email[i] = emails.inbox[i].from
+    }
+
+    var from = email.map((content,index) => {
       return (
-        <strong>{email}</strong>
-        )
+        <p key={content}><Link to={{ pathname: '/email/'+ content,
+                                     query: {name: 'inbox', id: index}
+                                     }}>{content}</Link></p>
+      )
     })
+    return(<div>{from}</div>)
   }
 }
 
 class spam extends React.Component {
   render () {
-    return (<h1>SPAM</h1>)
+    var email = []
+
+    for(var i in emails.spam) {
+      email[i] = emails.spam[i].from
+    }
+
+    var from = email.map((content,index) => {
+      return (
+        <p key={content}><Link to={{ pathname: '/email/'+ content,
+                                     query: {name: 'spam', id: index}
+                                     }}>{content}</Link></p>
+      )
+    })
+    return(<div>{from}</div>)
   }
 }
 
+class emailContent extends React.Component {
+  render () {
+    var type = this.props.location.query.name
+    var id = this.props.location.query.id
+
+    return (<div><strong>{type === 'inbox' ? emails.inbox[id].content: emails.spam[id].content}</strong></div>)
+  }
+}
+
+class NotMatch extends React.Component {
+  render () {
+    return (<strong>Page Not Found</strong>)
+  }
+}
 
 var routes = (
   <Router history={hashHistory}>
-  <Route path="/" component={navBar}>
-  <IndexRoute component={home}/>
-  <Route path="/inbox" component={inbox}></Route>
-  <Route path="/spam" component={spam}></Route>
-  </Route>
+    <Route path="/" component={navBar}>
+      <IndexRoute component={home}/>
+      <Route path="inbox" component={inbox}></Route>
+      <Route path="email/:emailId" component={emailContent}/>
+      <Route path="spam" component={spam}></Route>
+      <Route path="*" component={NotMatch}/>
+    </Route>
   </Router>
   );
 

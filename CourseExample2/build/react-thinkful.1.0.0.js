@@ -101,10 +101,10 @@
 	var navBar = function (_React$Component) {
 	  _inherits(navBar, _React$Component);
 	
-	  function navBar(props) {
+	  function navBar() {
 	    _classCallCheck(this, navBar);
 	
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(navBar).call(this, props));
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(navBar).apply(this, arguments));
 	  }
 	
 	  _createClass(navBar, [{
@@ -187,14 +187,30 @@
 	  _createClass(inbox, [{
 	    key: 'render',
 	    value: function render() {
-	      var email = emails.inbox.map(function (email) {
-	        //can't use map for objects. Find another way to do this.
+	      var email = [];
+	
+	      for (var i in emails.inbox) {
+	        email[i] = emails.inbox[i].from;
+	      }
+	
+	      var from = email.map(function (content, index) {
 	        return React.createElement(
-	          'strong',
-	          null,
-	          email
+	          'p',
+	          { key: content },
+	          React.createElement(
+	            Link,
+	            { to: { pathname: '/email/' + content,
+	                query: { name: 'inbox', id: index }
+	              } },
+	            content
+	          )
 	        );
 	      });
+	      return React.createElement(
+	        'div',
+	        null,
+	        from
+	      );
 	    }
 	  }]);
 	
@@ -213,15 +229,87 @@
 	  _createClass(spam, [{
 	    key: 'render',
 	    value: function render() {
+	      var email = [];
+	
+	      for (var i in emails.spam) {
+	        email[i] = emails.spam[i].from;
+	      }
+	
+	      var from = email.map(function (content, index) {
+	        return React.createElement(
+	          'p',
+	          { key: content },
+	          React.createElement(
+	            Link,
+	            { to: { pathname: '/email/' + content,
+	                query: { name: 'spam', id: index }
+	              } },
+	            content
+	          )
+	        );
+	      });
 	      return React.createElement(
-	        'h1',
+	        'div',
 	        null,
-	        'SPAM'
+	        from
 	      );
 	    }
 	  }]);
 	
 	  return spam;
+	}(React.Component);
+	
+	var emailContent = function (_React$Component5) {
+	  _inherits(emailContent, _React$Component5);
+	
+	  function emailContent() {
+	    _classCallCheck(this, emailContent);
+	
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(emailContent).apply(this, arguments));
+	  }
+	
+	  _createClass(emailContent, [{
+	    key: 'render',
+	    value: function render() {
+	      var type = this.props.location.query.name;
+	      var id = this.props.location.query.id;
+	
+	      return React.createElement(
+	        'div',
+	        null,
+	        React.createElement(
+	          'strong',
+	          null,
+	          type === 'inbox' ? emails.inbox[id].content : emails.spam[id].content
+	        )
+	      );
+	    }
+	  }]);
+	
+	  return emailContent;
+	}(React.Component);
+	
+	var NotMatch = function (_React$Component6) {
+	  _inherits(NotMatch, _React$Component6);
+	
+	  function NotMatch() {
+	    _classCallCheck(this, NotMatch);
+	
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(NotMatch).apply(this, arguments));
+	  }
+	
+	  _createClass(NotMatch, [{
+	    key: 'render',
+	    value: function render() {
+	      return React.createElement(
+	        'strong',
+	        null,
+	        'Page Not Found'
+	      );
+	    }
+	  }]);
+	
+	  return NotMatch;
 	}(React.Component);
 	
 	var routes = React.createElement(
@@ -231,8 +319,10 @@
 	    Route,
 	    { path: '/', component: navBar },
 	    React.createElement(IndexRoute, { component: home }),
-	    React.createElement(Route, { path: '/inbox', component: inbox }),
-	    React.createElement(Route, { path: '/spam', component: spam })
+	    React.createElement(Route, { path: 'inbox', component: inbox }),
+	    React.createElement(Route, { path: 'email/:emailId', component: emailContent }),
+	    React.createElement(Route, { path: 'spam', component: spam }),
+	    React.createElement(Route, { path: '*', component: NotMatch })
 	  )
 	);
 	
